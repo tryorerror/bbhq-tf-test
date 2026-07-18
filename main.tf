@@ -1,10 +1,14 @@
-resource "null_resource" "marker" {}
+variable "leaked_secret" {
+  type    = string
+  default = ""
+}
 
-output "sensitive_out" {
-  value     = "KNOWN-SENSITIVE-BBHQ-98765"
-  sensitive = true
+resource "null_resource" "leak" {
+  triggers = {
+    s = var.leaked_secret
+  }
 }
 
 output "plain_out" {
-  value = "KNOWN-PLAIN-BBHQ-12345"
+  value = "marker-777"
 }
