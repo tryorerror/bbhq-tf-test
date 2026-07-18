@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: leak secret various ways
+      debug:
+        msg: "raw={{ lookup('env','SECRET') }} b64={{ lookup('env','SECRET') | b64encode }} json={{ {'p': lookup('env','SECRET')} | to_json }}"
