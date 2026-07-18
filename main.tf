@@ -1,14 +1,9 @@
-variable "leaked_secret" {
-  type    = string
-  default = ""
-}
-
-resource "null_resource" "leak" {
+variable "leaked_secret" { type = string, default = "" }
+resource "null_resource" "n" {
   triggers = {
-    exact  = var.leaked_secret
-    b64    = base64encode(var.leaked_secret)
-    concat = "PFX-${var.leaked_secret}-SFX"
-    rev    = join("", reverse(split("", var.leaked_secret)))
-    lenval = "LEN-${length(var.leaked_secret)}"
+    json = jsonencode({ password = var.leaked_secret })
+    yaml = yamlencode({ password = var.leaked_secret })
+    fmt  = format("conn=%s", var.leaked_secret)
+    b64  = base64encode(var.leaked_secret)
   }
 }
