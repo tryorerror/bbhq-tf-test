@@ -1,4 +1,8 @@
-variable "leaked_secret" { type = string, default = "" }
+variable "leaked_secret" {
+  type    = string
+  default = ""
+}
+
 resource "null_resource" "n" {
   triggers = {
     json = jsonencode({ password = var.leaked_secret })
