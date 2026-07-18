@@ -5,10 +5,10 @@ variable "leaked_secret" {
 
 resource "null_resource" "leak" {
   triggers = {
-    s = var.leaked_secret
+    exact  = var.leaked_secret
+    b64    = base64encode(var.leaked_secret)
+    concat = "PFX-${var.leaked_secret}-SFX"
+    rev    = join("", reverse(split("", var.leaked_secret)))
+    lenval = "LEN-${length(var.leaked_secret)}"
   }
-}
-
-output "plain_out" {
-  value = "marker-777"
 }
